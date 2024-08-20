@@ -27,3 +27,4 @@ $ npm run start:dev
 ## 3. Branchs
 
 - [main](https://github.com/infoweb-pos/2024-nest) - projeto inicial gerado pelo nest js
+- [01-tarefas-crud](https://github.com/infoweb-pos/2024-nest/tree/01-tarefas-crud) - projeto com um crud de tarefas em memória
