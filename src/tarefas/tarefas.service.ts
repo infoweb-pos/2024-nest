@@ -8,7 +8,15 @@ export class TarefasService {
   tarefas: TarefaEntity[] = [];
 
   create(createTarefaDto: CreateTarefaDto) {
-    return 'This action adds a new tarefa';
+    const tarefa = {
+      id: this.tarefas.length + 1,
+      ...createTarefaDto,
+    };
+    this.tarefas.push(tarefa);
+    return {
+      estado: 'ok',
+      dados: tarefa,
+    };
   }
 
   findAll() {
