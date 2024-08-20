@@ -1,0 +1,11 @@
+### GET recupera todas as tarefas
+GET http://localhost:3000/tarefas/
+
+### GET recupera a tarefa de id 1
+GET http://localhost:3000/tarefas/1
+
+### DELETE apaga a tarefa de id 1
+DELETE http://localhost:3000/tarefas/1
+
+### PATCH atualiza a tarefa de id 1
+PATCH http://localhost:3000/tarefas/1
