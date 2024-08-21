@@ -44,7 +44,21 @@ export class TarefasService {
   }
 
   update(id: number, updateTarefaDto: UpdateTarefaDto) {
-    return `This action updates a #${id} tarefa`;
+    const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
+    if (index >= 0) {
+      this.tarefas[index] = {
+        ...this.tarefas[index],
+        ...updateTarefaDto,
+      };
+      return {
+        estado: 'ok',
+        dados: this.tarefas[index],
+      }
+    }
+    return {
+      estado: 'nok',
+      mensagem: `tarefa com #${id} não existe!`,
+    };
   }
 
   remove(id: number) {
