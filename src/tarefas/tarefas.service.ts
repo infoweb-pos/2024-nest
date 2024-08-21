@@ -48,6 +48,18 @@ export class TarefasService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} tarefa`;
+    const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
+    if (index >= 0) {
+      const tarefasRemovidas = this.tarefas.splice(index, 1);
+      return {
+        estado: 'ok',
+        dados: tarefasRemovidas[0],
+      };
+    } else {
+      return {
+        estado: 'nok',
+        mensagem: `tarefa com #${id} não existe!`,
+      };
+    }
   }
 }
