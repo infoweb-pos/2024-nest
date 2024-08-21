@@ -27,3 +27,10 @@ DELETE http://localhost:3000/tarefas/1
 
 ### PATCH atualiza a tarefa de id 1
 PATCH http://localhost:3000/tarefas/1
+content-type: application/json
+
+{
+  "titulo": "título modificado",
+  "descricao": "uma descrição da tarefa",
+  "concluido": true
+}
