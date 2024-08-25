@@ -11,32 +11,53 @@ export class TarefasService {
 
   constructor(private persistencia: PersistenciaService) {}
 
-  create(createTarefaDto: CreateTarefaDto) {
-    const tarefa = {
-      id: this.contador + 1,
-      ...createTarefaDto,
-    };
-    this.contador += 1;
-    this.tarefas.push(tarefa);
+  async create(createTarefaDto: CreateTarefaDto) {
+    // const tarefa = {
+    //   id: this.contador + 1,
+    //   ...createTarefaDto,
+    // };
+    // this.contador += 1;
+    // this.tarefas.push(tarefa);
+    const tarefa = await this.persistencia.tarefa.create({
+      data: createTarefaDto,
+    });
     return {
       estado: 'ok',
       dados: tarefa,
     };
   }
 
-  findAll() {
+  async findAll() {
+    // return {
+    //   estado: 'ok',
+    //   dados: this.tarefas,
+    // };
     return {
       estado: 'ok',
-      dados: this.tarefas,
+      dados: await this.persistencia.tarefa.findMany({}),
     };
   }
 
-  findOne(id: number) {
-    const temp = this.tarefas.filter((tarefa) => tarefa.id === id);
-    if (temp[0]) {
+  async findOne(id: number) {
+    // const temp = this.tarefas.filter((tarefa) => tarefa.id === id);
+    // if (temp[0]) {
+    //   return {
+    //     estado: 'ok',
+    //     dados: temp[0],
+    //   };
+    // } else {
+    //   return {
+    //     estado: 'nok',
+    //     mensagem: `tarefa com #${id} não existe!`,
+    //   };
+    // }
+    const tarefa = await this.persistencia.tarefa.findUnique({
+      where: { id: id },
+    });
+    if (tarefa) {
       return {
         estado: 'ok',
-        dados: temp[0],
+        dados: tarefa,
       };
     } else {
       return {
@@ -46,37 +67,67 @@ export class TarefasService {
     }
   }
 
-  update(id: number, updateTarefaDto: UpdateTarefaDto) {
-    const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
-    if (index >= 0) {
-      this.tarefas[index] = {
-        ...this.tarefas[index],
-        ...updateTarefaDto,
-      };
-      return {
-        estado: 'ok',
-        dados: this.tarefas[index],
-      };
-    }
-    return {
-      estado: 'nok',
-      mensagem: `tarefa com #${id} não existe!`,
-    };
+  async update(id: number, updateTarefaDto: UpdateTarefaDto) {
+    // const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
+    // if (index >= 0) {
+    //   this.tarefas[index] = {
+    //     ...this.tarefas[index],
+    //     ...updateTarefaDto,
+    //   };
+    //   return {
+    //     estado: 'ok',
+    //     dados: this.tarefas[index],
+    //   };
+    // }
+    // return {
+    //   estado: 'nok',
+    //   mensagem: `tarefa com #${id} não existe!`,
+    // };
+    const resultado = await this.persistencia.tarefa
+      .update({
+        where: { id: id },
+        data: updateTarefaDto,
+      })
+      .then((tarefa) => {
+        return {
+          estado: 'ok',
+          dados: tarefa,
+        };
+      })
+      .catch((error) => {
+        return {
+          estado: 'nok',
+          mensagem: `tarefa com #${id} não existe!`,
+        };
+      });
+    return resultado;
   }
 
-  remove(id: number) {
-    const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
-    if (index >= 0) {
-      const tarefasRemovidas = this.tarefas.splice(index, 1);
-      return {
-        estado: 'ok',
-        dados: tarefasRemovidas[0],
-      };
-    } else {
-      return {
-        estado: 'nok',
-        mensagem: `tarefa com #${id} não existe!`,
-      };
-    }
+  async remove(id: number) {
+    // const index = this.tarefas.findIndex((tarefa) => tarefa.id === id);
+    // if (index >= 0) {
+    //   const tarefasRemovidas = this.tarefas.splice(index, 1);
+    //   return {
+    //     estado: 'ok',
+    //     dados: tarefasRemovidas[0],
+    //   };
+    // } else {
+    //   return {
+    //     estado: 'nok',
+    //     mensagem: `tarefa com #${id} não existe!`,
+    //   };
+    // }
+    const resultado = await this.persistencia.tarefa
+      .delete({ where: { id } })
+      .then((tarefa) => {
+        return { estado: 'ok', dados: tarefa };
+      })
+      .catch((error) => {
+        return {
+          estado: 'nok',
+          mensagem: `tarefa com #${id} não existe!`,
+        };
+      });
+    return resultado;
   }
 }
