@@ -1,0 +1,17 @@
+POST http://localhost:3000/autenticacao/login
+Content-Type: application/json
+
+{
+  "apelido": "leonardo",
+  "senha": "123"
+}
+
+### 
+
+POST http://localhost:3000/autenticacao/login
+Content-Type: application/json
+
+{
+  "apelido": "leonardo.minora",
+  "senha": "321"
+}
