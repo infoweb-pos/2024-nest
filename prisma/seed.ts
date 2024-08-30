@@ -28,8 +28,17 @@ const seed = async () => {
       },
     ],
   });
-
   console.log(tarefas);
+
+  prisma.usuario
+    .createManyAndReturn({
+      data: [
+        { apelido: 'leonardo', senha: '123' },
+        { apelido: 'minora', senha: '321' },
+      ],
+    })
+    .then((usuarios) => console.log(usuarios))
+    .catch((error) => console.error(error));
 };
 
 seed()
